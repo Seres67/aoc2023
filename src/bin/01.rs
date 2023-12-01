@@ -35,7 +35,6 @@ pub fn part_two(input: &str) -> Option<u32> {
         .replace("eight", "eight8eight")
         .replace("nine", "nine9nine")
         .replace("zero", "zero0zero");
-    println!("{splitted}");
     let splitted = splitted.lines();
     let mut num_array: Vec<char> = Vec::new();
     let mut calibrations_numbers: Vec<u32> = Vec::new();
