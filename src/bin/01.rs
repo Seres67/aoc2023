@@ -23,7 +23,6 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    // replacing like this works, but why?
     let splitted = input
         .replace("one", "o1e")
         .replace("two", "t2o")
