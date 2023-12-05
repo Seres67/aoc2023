@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 advent_of_code::solution!(5);
 
 #[derive(Debug)]
@@ -11,7 +12,7 @@ pub fn part_one(input: &str) -> Option<u64> {
     let lines = input.lines();
     let seeds_str: String = lines.clone().take(1).collect();
     let seeds_pos = seeds_str.find(": ").unwrap();
-    let seeds_split = seeds_str[seeds_pos + 2..].split(" ");
+    let seeds_split = seeds_str[seeds_pos + 2..].split(' ');
     let mut seeds: Vec<u64> = Vec::new();
     for seed in seeds_split {
         seeds.push(seed.parse().unwrap());
@@ -23,12 +24,12 @@ pub fn part_one(input: &str) -> Option<u64> {
         if line.is_empty() {
             continue;
         }
-        if !line.chars().nth(0).unwrap().is_digit(10) {
+        if !line.chars().next().unwrap().is_ascii_digit() {
             maps.push(Vec::new());
             i += 1;
             continue;
         }
-        let ranges = line.split(" ").collect::<Vec<&str>>();
+        let ranges = line.split(' ').collect::<Vec<&str>>();
         maps[i].push(Map {
             dest: ranges[0].parse().unwrap(),
             source: ranges[1].parse().unwrap(),
@@ -39,23 +40,27 @@ pub fn part_one(input: &str) -> Option<u64> {
     while i < maps.len() {
         for seed in seeds.iter_mut() {
             for map in &maps[i] {
-                let source = map.source as u64;
-                let dest = map.dest as u64;
+                let source = map.source;
+                let dest = map.dest;
                 let len = source + map.len;
-                if source > dest {
-                    let add = source.checked_sub(dest);
-                    let valid = (source..=len).contains(seed);
-                    if valid {
-                        let add = add.unwrap();
-                        *seed -= add;
+                match source.cmp(&dest) {
+                    Ordering::Greater => {
+                        let add = source.checked_sub(dest);
+                        let valid = (source..=len).contains(seed);
+                        if valid {
+                            let add = add.unwrap();
+                            *seed -= add;
+                        }
                     }
-                } else if dest > source {
-                    let add = dest.checked_sub(source);
-                    let valid = (source..=len).contains(seed);
-                    if valid {
-                        let add = add.unwrap();
-                        *seed += add;
+                    Ordering::Less => {
+                        let add = dest.checked_sub(source);
+                        let valid = (source..=len).contains(seed);
+                        if valid {
+                            let add = add.unwrap();
+                            *seed += add;
+                        }
                     }
+                    _ => ()
                 }
             }
         }
@@ -76,7 +81,7 @@ pub fn part_two(input: &str) -> Option<u64> {
     let seeds_str: String = lines.clone().take(1).collect();
     let seeds_pos = seeds_str.find(": ").unwrap();
     let seeds_split: Vec<u64> = seeds_str[seeds_pos + 2..]
-        .split(" ")
+        .split(' ')
         .map(|f| f.parse().unwrap())
         .collect();
     let mut seeds: Vec<SeedCollection> = Vec::new();
@@ -93,12 +98,12 @@ pub fn part_two(input: &str) -> Option<u64> {
         if line.is_empty() {
             continue;
         }
-        if !line.chars().nth(0).unwrap().is_digit(10) {
+        if !line.chars().next().unwrap().is_ascii_digit() {
             maps.push(Vec::new());
             i += 1;
             continue;
         }
-        let ranges = line.split(" ").collect::<Vec<&str>>();
+        let ranges = line.split(' ').collect::<Vec<&str>>();
         maps[i].push(Map {
             dest: ranges[0].parse().unwrap(),
             source: ranges[1].parse().unwrap(),

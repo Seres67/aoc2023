@@ -6,7 +6,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     let mut calibrations_numbers: Vec<u32> = Vec::new();
     for str in splitted.into_iter() {
         for char in str.chars() {
-            if char.is_digit(10) {
+            if char.is_ascii_digit() {
                 num_array.push(char);
             }
         }
@@ -39,7 +39,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     let mut calibrations_numbers: Vec<u32> = Vec::new();
     for str in splitted.into_iter() {
         for char in str.chars() {
-            if char.is_digit(10) {
+            if char.is_ascii_digit() {
                 num_array.push(char);
             }
         }

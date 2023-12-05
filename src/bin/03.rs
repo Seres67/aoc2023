@@ -22,7 +22,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     let mut valid = false;
     let mut valid_numbers: Vec<u32> = Vec::new();
     for (i, char) in input.chars().enumerate() {
-        if char.is_digit(10) {
+        if char.is_ascii_digit() {
             tmp.push(char);
             if check_symbol(&input, i, x) {
                 valid = true;
@@ -56,7 +56,7 @@ fn check_star(input: &str, i: usize, x: usize) -> usize {
             let direction_char = get_direction_char((dy * x as isize + dx) as usize);
             if direction_char == '*' {
                 let pos: isize = dy * (x as isize) + dx;
-                return i.wrapping_add(pos as usize) as usize;
+                return i.wrapping_add(pos as usize);
             }
         }
     }
@@ -79,7 +79,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     let mut valid_numbers: Vec<ValidNumber> = Vec::new();
 
     for (i, char) in input.chars().enumerate() {
-        if char.is_digit(10) {
+        if char.is_ascii_digit() {
             tmp.push(char);
             if tmp_star == 0 {
                 tmp_star = check_star(&input, i, x);
@@ -103,10 +103,9 @@ pub fn part_two(input: &str) -> Option<u32> {
     }
     let mut sum = 0;
     valid_numbers.sort_by(|x, y| x.star_pos.cmp(&y.star_pos));
-    for mut i in 0..valid_numbers.len() - 1 {
+    for i in 0..valid_numbers.len() - 1 {
         if valid_numbers[i].star_pos == valid_numbers[i + 1].star_pos {
             sum += valid_numbers[i].num * valid_numbers[i + 1].num;
-            i += 1;
         }
     }
     Some(sum as u32)

@@ -36,34 +36,22 @@ struct Game {
 }
 
 fn check_red(count: u32) -> bool {
-    if count > 12 {
-        false
-    } else {
-        true
-    }
+    count <= 12
 }
 
 fn check_green(count: u32) -> bool {
-    if count > 13 {
-        false
-    } else {
-        true
-    }
+    count <= 13
 }
 
 fn check_blue(count: u32) -> bool {
-    if count > 14 {
-        false
-    } else {
-        true
-    }
+    count <= 14
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let lines = input.split("\n").collect::<Vec<&str>>();
+    let lines = input.split('\n').collect::<Vec<&str>>();
     let mut games = Vec::new();
     for line in lines.iter() {
-        let mut tokens = line.split(" ").collect::<Vec<&str>>();
+        let mut tokens = line.split(' ').collect::<Vec<&str>>();
         if tokens.len() < 2 {
             continue;
         }
@@ -109,10 +97,10 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let lines = input.split("\n").collect::<Vec<&str>>();
+    let lines = input.split('\n').collect::<Vec<&str>>();
     let mut games = Vec::new();
     for line in lines.iter() {
-        let mut tokens = line.split(" ").collect::<Vec<&str>>();
+        let mut tokens = line.split(' ').collect::<Vec<&str>>();
         if tokens.len() < 2 {
             continue;
         }
