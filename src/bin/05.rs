@@ -20,12 +20,13 @@ pub fn part_one(input: &str) -> Option<u64> {
     maps.push(Vec::new());
     let mut i: usize = 0;
     for line in lines {
-        if line.is_empty() || !line.chars().nth(0).unwrap().is_digit(10) {
+        if line.is_empty() {
             continue;
         }
         if !line.chars().nth(0).unwrap().is_digit(10) {
             maps.push(Vec::new());
             i += 1;
+            continue;
         }
         let ranges = line.split(" ").collect::<Vec<&str>>();
         maps[i].push(Map {
@@ -89,12 +90,13 @@ pub fn part_two(input: &str) -> Option<u64> {
     maps.push(Vec::new());
     let mut i = 0;
     for line in lines {
-        if line.is_empty() || !line.chars().nth(0).unwrap().is_digit(10) {
+        if line.is_empty() {
             continue;
         }
         if !line.chars().nth(0).unwrap().is_digit(10) {
             maps.push(Vec::new());
             i += 1;
+            continue;
         }
         let ranges = line.split(" ").collect::<Vec<&str>>();
         maps[i].push(Map {
@@ -144,13 +146,10 @@ pub fn part_two(input: &str) -> Option<u64> {
                 });
             }
         }
-        // tmp.sort_by(|x, y| x.start.cmp(&y.start));
         seeds = tmp;
-        // seeds.append(&mut tmp);
         i += 1;
     }
     seeds.sort_unstable_by(|x, y| x.start.cmp(&y.start));
-    println!("{seeds:?}");
     Some(seeds.first().unwrap().start)
 }
 
