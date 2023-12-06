@@ -18,11 +18,13 @@ pub fn part_one(input: &str) -> Option<u32> {
     let mut count = 1;
     for (time, distance) in zip {
         let mut tmp_count = 0;
-        for i in 0..*time {
+        for i in 1..*time {
             let speed = i;
             let move_time = time - i;
             if speed * move_time > *distance {
                 tmp_count += 1;
+            } else if tmp_count > 1 {
+                break;
             }
         }
         count *= tmp_count;
@@ -46,11 +48,13 @@ pub fn part_two(input: &str) -> Option<u32> {
         .collect::<String>();
     let distance: u64 = distance.parse().unwrap();
     let mut count = 0;
-    for i in 0..time {
+    for i in 1..time {
         let speed = i;
         let move_time = time - i;
         if speed * move_time > distance {
             count += 1;
+        } else if count > 1 {
+            break;
         }
     }
     Some(count)
