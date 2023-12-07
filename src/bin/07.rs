@@ -1,5 +1,3 @@
-use std::mem::swap;
-
 advent_of_code::solution!(7);
 
 #[derive(Debug)]
@@ -62,11 +60,10 @@ pub fn part_one(input: &str) -> Option<u32> {
         })
         .collect();
     eval(&mut hands);
-    let out: usize = hands
+    let out = hands
         .iter()
         .enumerate()
-        .fold(0, |acc, (i, hand)| acc + ((i + 1) * hand.bid as usize))
-        .into();
+        .fold(0, |acc, (i, hand)| acc + ((i + 1) * hand.bid as usize));
     Some(out as u32)
 }
 fn eval2(hands: &mut [Hand]) {
@@ -127,11 +124,10 @@ pub fn part_two(input: &str) -> Option<u32> {
         })
         .collect();
     eval2(&mut hands);
-    let out: usize = hands
+    let out = hands
         .iter()
         .enumerate()
-        .fold(0, |acc, (i, hand)| acc + ((i + 1) * hand.bid as usize))
-        .into();
+        .fold(0, |acc, (i, hand)| acc + ((i + 1) * hand.bid as usize));
     Some(out as u32)
 }
 
