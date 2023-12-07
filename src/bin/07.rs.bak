@@ -1,0 +1,113 @@
+advent_of_code::solution!(7);
+
+#[derive(Debug)]
+struct Hand {
+    pub cards: String,
+    pub bid: u32,
+    pub power: u32,
+}
+
+fn eval(hands: &mut [Hand]) {
+    let cards = [
+        '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A',
+    ];
+    for hand in hands.iter_mut() {
+        let mut cards_count: Vec<u32> = vec![0; 13];
+        for card in hand.cards.chars() {
+            let pos = cards.iter().position(|c| *c == card).unwrap();
+            cards_count[pos] += 1;
+        }
+        cards_count.sort();
+        cards_count.reverse();
+        match cards_count[0] {
+            5 => hand.power += 6,
+            4 => hand.power += 5,
+            3 => {
+                if cards_count[1] == 2 {
+                    hand.power += 4;
+                } else {
+                    hand.power += 3;
+                }
+            }
+            2 => {
+                if cards_count[1] == 2 {
+                    hand.power += 2;
+                } else {
+                    hand.power += 1;
+                }
+            }
+            _ => (),
+        }
+    }
+    hands.sort_unstable_by_key(|x| x.power);
+    for _ in 0..hands.len() {
+        for i in 0..hands.len() - 1 {
+            if hands[i].power == hands[i + 1].power {
+                let curr_cards = hands[i].cards.chars();
+                let next_cards = hands[i + 1].cards.chars();
+                let zip = curr_cards.zip(next_cards);
+                for (curr, next) in zip {
+                    let curr_pos = cards.iter().position(|c| *c == curr).unwrap();
+                    let next_pos = cards.iter().position(|c| *c == next).unwrap();
+                    match curr_pos.cmp(&next_pos) {
+                        std::cmp::Ordering::Greater => {
+                            hands[i].power += 1;
+                            for hand in hands.iter_mut().skip(i + 2) {
+                                hand.power += 1;
+                            }
+                            break;
+                        }
+                        std::cmp::Ordering::Less => {
+                            for hand in hands.iter_mut().skip(i + 1) {
+                                hand.power += 1;
+                            }
+                            break;
+                        }
+                        _ => (),
+                    }
+                }
+            }
+        }
+        hands.sort_unstable_by_key(|x| x.power);
+    }
+}
+
+pub fn part_one(input: &str) -> Option<u32> {
+    let mut hands: Vec<Hand> = input
+        .lines()
+        .map(|line| {
+            let split = line.split(' ').collect::<Vec<&str>>();
+            let cards = split[0];
+            let bid = split[1].parse().unwrap();
+            Hand {
+                cards: cards.to_string(),
+                bid,
+                power: 0,
+            }
+        })
+        .collect();
+    eval(&mut hands);
+    let out: Vec<u32> = hands.iter().map(|p| p.bid * p.power).collect();
+    Some(out.iter().sum())
+}
+
+pub fn part_two(input: &str) -> Option<u32> {
+    None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_part_one() {
+        let result = part_one(&advent_of_code::template::read_file("examples", DAY));
+        assert_eq!(result, Some(6440));
+    }
+
+    #[test]
+    fn test_part_two() {
+        let result = part_two(&advent_of_code::template::read_file("examples", DAY));
+        assert_eq!(result, None);
+    }
+}
